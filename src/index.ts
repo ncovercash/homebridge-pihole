@@ -10,8 +10,8 @@ import {
 	Logging,
 	Service
 } from "homebridge";
-
-import * as https from "https";
+import { IncomingMessage } from "http";
+import { get } from "https";
 import { stringify } from "querystring";
 
 let hap: HAP;
@@ -91,7 +91,7 @@ class PiholeSwitch implements AccessoryPlugin {
 		];
 	}
 
-	private _responseHandler(response: https.IncomingMessage, next: Function) {
+	private _responseHandler(response: IncomingMessage, next: Function) {
 		let body = "";
 
 		response.on("data", (data) => {
@@ -122,7 +122,7 @@ class PiholeSwitch implements AccessoryPlugin {
 	}
 
 	private _makeRequest(path: string, next: Function) {
-		let request = https.get({
+		let request = get({
 			host: this.host,
 			port: this.port,
 			path: `${BASE_URL}?${path}`
